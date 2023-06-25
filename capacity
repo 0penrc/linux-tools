@@ -1,0 +1,15 @@
+#!/bin/sh
+#replace BAT1 with your battery
+if test "$*"; then
+	battery="$*"
+else
+	battery=BAT1
+fi
+#get capacity
+chargefull=$(cat /sys/class/power_supply/$battery/charge_full)
+#get original capacity
+chargefulldesign=$(cat /sys/class/power_supply/$battery/charge_full_design)
+#calculate capacity using some code i got from stack overflow and honestly idfk what i was doing and echo it without a newline
+echo -n $(echo "scale=2 ; ($chargefull/$chargefulldesign)" | bc | sed 's/\.//')
+#add the percent
+echo %
